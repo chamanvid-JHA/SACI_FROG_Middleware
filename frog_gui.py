@@ -133,12 +133,45 @@ class KernelFROGCore:
 # -----------------------------------------------------------------------------
 kernel = KernelFROGCore()
 
+# BANNER ENCABEZADO
 col_logo, col_title = st.columns([1, 6])
 with col_logo:
     st.title("🐸")
 with col_title:
     st.title("FROG KERNEL — CONTROL SINTRÓPICO")
     st.caption("Middleware SACI | Auditoría y Visualización en Tiempo Real | 100 Sensores SYTEC")
+
+# SECCIÓN EXPLICATIVA DESPLEGABLE
+with st.expander("ℹ️ **¿Qué es, para qué sirve, qué hace y qué podría hacer este Kernel?**", expanded=False):
+    col_a, col_b = st.columns(2)
+    
+    with col_a:
+        st.markdown("""
+        ### 🧠 ¿Qué es?
+        Es un **middleware y centro de control sintrópico** diseñado bajo la arquitectura **SACI**. Funciona como un motor informático que monitorea y procesa patrones de orden, ruido y sincronía en redes compuestas por múltiples nodos o sensores (Matriz SYTEC).
+
+        ### ⚙️ ¿Para qué sirve?
+        Sirve para **auditar, visualizar y corregir la estabilidad de sistemas dinámicos en tiempo real**. Permite detectar rápidamente cuando un nodo sufre variaciones de entropía (desorden o ruido elevado) antes de que afecte la red global.
+        """)
+        
+    with col_b:
+        st.markdown("""
+        ### 🔄 ¿Qué hace actualmente?
+        1. **Monitorea 100 sensores SYTEC** organizados en una matriz interactiva 10x10.
+        2. **Mide coeficientes sintrópicos (K) y deltas de ruido** en cada ciclo de simulación.
+        3. **Calcula la coherencia de fase global** y la sincronía entre nodos.
+        4. **Registra eventos y alertas** en vivo cuando un nodo pasa a estado entrópico (🔴).
+        5. **Exporta métricas históricas** en formato CSV para análisis posterior.
+        """)
+
+    st.markdown("---")
+    st.markdown("""
+    ### 🚀 ¿Qué podría hacer en el futuro? (Potencial de Escalabilidad)
+    * **Integración con Hardware Real:** Conectarse directamente a redes físicas de sensores IoT, antenas o nodos de red mediante protocolos WebSockets o APIs REST.
+    * **Consenso Algorítmico Descentralizado:** Aplicar las métricas de coherencia de fase para validar transacciones o estados en redes entre pares (P2P).
+    * **Clonación de Fase Automática:** Implementar algoritmos de autocorrección activa para reequilibrar nodos desajustados de forma autónoma.
+    * **Machine Learning / Predicción Entrópica:** Anticipar fallas en los sensores mediante análisis predictivo de series temporales.
+    """)
 
 st.divider()
 
