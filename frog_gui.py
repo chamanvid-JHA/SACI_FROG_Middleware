@@ -130,15 +130,15 @@ I18N = {
 }
 
 # -----------------------------------------------------------------------------
-# CONTENIDO DEL WHITEPAPER
+# CONTENIDO DEL WHITEPAPER (Uso de Raw String `r"""` para evitar error unicodeescape)
 # -----------------------------------------------------------------------------
-WHITEPAPER_TEXT = """
-# 📄 WHITEPAPER: PROTOCOLO FROG & ARCHITECTURA SACI
+WHITEPAPER_TEXT = r"""
+# 📄 WHITEPAPER: PROTOCOLO FROG & ARQUITECTURA SACI
 **Versión:** 2.5 | **Estado:** Implementación Middleware | **Autor:** JHA CR
 
 ---
 
-## 1. RESUMEN EXECUTIVO (EXECUTIVE SUMMARY)
+## 1. RESUMEN EJECUTIVO (EXECUTIVE SUMMARY)
 El **Protocolo FROG** (Frequency Resonant Order Governance) junto a la **Arquitectura SACI** constituye una infraestructura informática diseñada para el monitoreo, evaluación y estabilización sintrópica de redes dinámicas complejas. En entornos con alto nivel de interferencia o ruido estocástico, el FROG Kernel actúa como una capa de abstracción middleware capaz de transformar variaciones entrópicas ($K$) en métricas deterministas de coherencia de fase.
 
 ---
@@ -152,13 +152,13 @@ $$K_{efectivo} = | K_{actual} + \sigma \cdot \xi |$$
 
 Donde:
 * $K_{actual}$: Estado previo del coeficiente sintrópico.
-* $\sigma$: Factor de sensibilidad al ruido base $R_i = \\frac{5.0}{\\sqrt{i}}$.
-* $\xi$: Perturbación estocástica uniforme $\\xi \\sim U(-0.25, 0.25)$.
+* $\sigma$: Factor de sensibilidad al ruido base $R_i = \frac{5.0}{\sqrt{i}}$.
+* $\xi$: Perturbación estocástica uniforme $\xi \sim U(-0.25, 0.25)$.
 
 ### 2.2 Coherencia de Fase Global ($\Phi$)
-La sincronización armónica global entre los 100 sensores se cuantifica mediante la media de componentes sinusoidales de fase $\\theta_i$:
+La sincronización armónica global entre los 100 sensores se cuantifica mediante la media de componentes sinusoidales de fase $\theta_i$:
 
-$$\\Phi = \\frac{1}{N} \\left| \\sum_{i=1}^{N} \\cos(\\theta_i) \\right|$$
+$$\Phi = \frac{1}{N} \left| \sum_{i=1}^{N} \cos(\theta_i) \right|$$
 
 ---
 
@@ -171,7 +171,7 @@ La arquitectura SACI se divide en tres niveles estandarizados:
 ---
 
 ## 4. HOJA DE RUTA Y ESCALABILIDAD (ROADMAP)
-* **Fase I (Completada):** Simulación de motor en tiempo real y visualizador matriacial Plotly 2D.
+* **Fase I (Completada):** Simulación de motor en tiempo real y visualizador matricial Plotly 2D.
 * **Fase II (En desarrollo):** Integración de sockets bidireccionales para hardware IoT real.
 * **Fase III:** Mecanismos de consenso algorítmico P2P descentralizado sin dependencia de autoridad central.
 """
