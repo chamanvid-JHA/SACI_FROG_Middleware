@@ -4,6 +4,7 @@
 """
 FROG KERNEL v2.5 - SISTEMA DE CONTROL SINTRÓPICO & AUDITORÍA EN TIEMPO REAL
 Arquitectura SACI / Protocolo FROG - Dashboard Multilingüe + Whitepaper
+Hecho en Costa Rica | JHA CR 506
 """
 
 import math
@@ -33,6 +34,14 @@ st.markdown("""
     .main { background-color: #0d1117; }
     .stMetric { background-color: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 12px; }
     .stAlert { border-radius: 8px; }
+    .footer-stamp {
+        text-align: center;
+        padding: 20px 0 10px 0;
+        color: #8b949e;
+        font-size: 0.9em;
+        border-top: 1px solid #30363d;
+        margin-top: 40px;
+    }
     </style>
 """, unsafe_allow_html=True)
 
@@ -130,11 +139,11 @@ I18N = {
 }
 
 # -----------------------------------------------------------------------------
-# CONTENIDO DEL WHITEPAPER (Uso de Raw String `r"""` para evitar error unicodeescape)
+# CONTENIDO DEL WHITEPAPER
 # -----------------------------------------------------------------------------
 WHITEPAPER_TEXT = r"""
 # 📄 WHITEPAPER: PROTOCOLO FROG & ARQUITECTURA SACI
-**Versión:** 2.5 | **Estado:** Implementación Middleware | **Autor:** JHA CR
+**Versión:** 2.5 | **Estado:** Implementación Middleware | **Autor:** JHA CR (Costa Rica 🇨🇷 506)
 
 ---
 
@@ -174,6 +183,9 @@ La arquitectura SACI se divide en tres niveles estandarizados:
 * **Fase I (Completada):** Simulación de motor en tiempo real y visualizador matricial Plotly 2D.
 * **Fase II (En desarrollo):** Integración de sockets bidireccionales para hardware IoT real.
 * **Fase III:** Mecanismos de consenso algorítmico P2P descentralizado sin dependencia de autoridad central.
+
+---
+*Hecho con precisión en Costa Rica 🇨🇷 — JHA CR 506*
 """
 
 # -----------------------------------------------------------------------------
@@ -316,6 +328,9 @@ if col_b2.button(t["reset_btn"], use_container_width=True):
     kernel.reiniciar()
     st.rerun()
 
+st.sidebar.markdown("---")
+st.sidebar.caption("🇨🇷 **Hecho en Costa Rica**\n\n**JHA CR 506**")
+
 # MÉTRICAS
 hist = st.session_state.historial
 ultimo = hist[-1] if hist else {"Ciclo": 0, "K_Promedio": 0.0, "Delta_Global": 0.0, "Coherencia_Fase": 0.0, "Sintropia_Indice": 1.0, "Sensores_Entropicos": 0}
@@ -405,6 +420,14 @@ with tab_wp:
         file_name="FROG_Protocol_Whitepaper.md",
         mime="text/markdown"
     )
+
+# PIE DE PÁGINA CON FIRMA
+st.markdown("""
+    <div class="footer-stamp">
+        <strong>FROG KERNEL & PROTOCOLO SACI</strong><br>
+        Hecho en Costa Rica 🇨🇷 — <strong>JHA CR 506</strong>
+    </div>
+""", unsafe_allow_html=True)
 
 # LOOP AUTO-REFRESCO
 if run_auto:
