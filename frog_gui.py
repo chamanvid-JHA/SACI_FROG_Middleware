@@ -15,11 +15,11 @@ import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass
 from typing import List
 
 # -----------------------------------------------------------------------------
-# CONFIGURACIÓN DE PÁGINA (WIDE MODE & CUSTOM THEME)
+# CONFIGURACIÓN DE PÁGINA
 # -----------------------------------------------------------------------------
 st.set_page_config(
     page_title="FROG Kernel | Control Sintrópico",
@@ -28,7 +28,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Estilos CSS personalizados para apariencia tipo Consola de Control
+# Estilos CSS estilo Consola de Control
 st.markdown("""
     <style>
     .main { background-color: #0d1117; }
@@ -38,7 +38,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # -----------------------------------------------------------------------------
-# MODELO DE DATOS Y LÓGICA CORE DEL KERNEL
+# MODELO DE DATOS Y LÓGICA CORE
 # -----------------------------------------------------------------------------
 @dataclass
 class SensorSYTEC:
@@ -53,7 +53,6 @@ class KernelFROGCore:
     def __init__(self, num_sensores: int = 100):
         self.num_sensores = num_sensores
         
-        # Estado persistente de la sesión
         if "sensors" not in st.session_state:
             st.session_state.sensors = self._inicializar_sensores()
         if "historial" not in st.session_state:
@@ -83,11 +82,8 @@ class KernelFROGCore:
         deltas = []
         ks = []
         fases = []
-        cambios_estado = []
 
-        # Actualización de cada sensor
         for sensor in st.session_state.sensors:
-            # Simulación de dinámica sintrópica y fase
             delta_fase = random.uniform(-0.1, 0.1)
             sensor.fase = (sensor.fase + delta_fase) % (2 * math.pi)
             
@@ -96,13 +92,11 @@ class KernelFROGCore:
             
             estado_anterior = sensor.estado
             
-            # Condición de activación entrópica
             if k_efectivo > umbral_entropia or random.random() < 0.05:
                 sensor.estado = "ENTRÓPICO"
             else:
                 sensor.estado = "SINTRÓPICO"
 
-            # Registro de log si cambia de estado
             if estado_anterior != sensor.estado:
                 color_log = "🔴" if sensor.estado == "ENTRÓPICO" else "🟢"
                 st.session_state.logs.insert(0, f"[{time.strftime('%H:%M:%S')}] Ciclo {ciclo_actual}: Sensor #{sensor.id:02d} cambió a {sensor.estado} {color_log}")
@@ -114,13 +108,11 @@ class KernelFROGCore:
             ks.append(sensor.k_actual)
             fases.append(sensor.fase)
 
-        # Métricas Consolidadas del Kernel
         k_prom = round(statistics.mean(ks), 4)
         delta_prom = round(statistics.mean(deltas), 4)
         coherencia_fase = round(abs(sum(math.cos(f) for f in fases)) / self.num_sensores, 4)
         sintropia_global = round(1.0 / (1.0 + delta_prom), 4)
 
-        # Guardar en Historial
         st.session_state.historial.append({
             "Ciclo": ciclo_actual,
             "K_Promedio": k_prom,
@@ -137,11 +129,10 @@ class KernelFROGCore:
         st.session_state.ciclo = 0
 
 # -----------------------------------------------------------------------------
-# INTERFAZ DE USUARIO (DASHBOARD AVS)
+# INTERFAZ DE USUARIO
 # -----------------------------------------------------------------------------
 kernel = KernelFROGCore()
 
-# BANNER PRINCIPAL
 col_logo, col_title = st.columns([1, 6])
 with col_logo:
     st.title("🐸")
@@ -151,7 +142,7 @@ with col_title:
 
 st.divider()
 
-# SIDEBAR: PARAMETRIZACIÓN Y CONTROLES
+# SIDEBAR: PANEL DE COMANDO
 st.sidebar.header("🕹️ Panel de Comando")
 
 run_auto = st.sidebar.toggle("⚡ Ejecución Automática", value=False)
@@ -169,7 +160,7 @@ if col_b2.button("🔄 Reiniciar", use_container_width=True):
     kernel.reiniciar()
     st.rerun()
 
-# METRICAS PRINCIPALES (TOP BAR)
+# MÉTRICAS TOP
 hist = st.session_state.historial
 ultimo = hist[-1] if hist else {"Ciclo": 0, "K_Promedio": 0.0, "Delta_Global": 0.0, "Coherencia_Fase": 0.0, "Sintropia_Indice": 1.0, "Sensores_Entropicos": 0}
 
@@ -182,7 +173,7 @@ m5.metric("Nodos Entrópicos", ultimo["Sensores_Entropicos"], delta_color="inver
 
 st.divider()
 
-# PESTAÑAS PRINCIPALES
+# PESTAÑAS
 tab_matriz, tab_analisis, tab_inspector, tab_logs = st.tabs([
     "🎛️ Matriz 2D de Sensores", 
     "📊 Tendencias y Fase", 
@@ -190,19 +181,16 @@ tab_matriz, tab_analisis, tab_inspector, tab_logs = st.tabs([
     "📜 Terminal de Logs"
 ])
 
-# TAB 1: VISUALIZACIÓN MATRICIAL PLOTLY
+# TAB 1: MATRIZ PLOTLY
 with tab_matriz:
     st.subheader("Matriz de Calor Sintrópica (10x10)")
     
-    # Construir matriz de valores K y matriz de IDs
     k_matrix = np.zeros((10, 10))
-    id_matrix = np.zeros((10, 10), dtype=int)
     estado_matrix = [["" for _ in range(10)] for _ in range(10)]
     
     for idx, s in enumerate(st.session_state.sensors):
         r, c = divmod(idx, 10)
         k_matrix[r, c] = s.k_actual
-        id_matrix[r, c] = s.id
         estado_matrix[r][c] = f"S#{s.id:02d} | {s.estado}<br>K: {s.k_actual:.2f}"
 
     fig_heatmap = px.imshow(
@@ -227,7 +215,7 @@ with tab_matriz:
     
     st.plotly_chart(fig_heatmap, use_container_width=True)
 
-# TAB 2: GRÁFICAS DE TENDENCIA
+# TAB 2: GRÁFICAS
 with tab_analisis:
     st.subheader("Dinámica Temporal del Kernel")
     if len(hist) > 0:
@@ -249,13 +237,12 @@ with tab_analisis:
             fig_fase.update_layout(paper_bgcolor="rgba(0,0,0,0)")
             st.plotly_chart(fig_fase, use_container_width=True)
             
-        # Descarga de datos
         csv_bytes = df_hist.to_csv(index=False).encode('utf-8')
         st.download_button("📥 Exportar Datos Registrados (CSV)", data=csv_bytes, file_name="kernel_frog_metrics.csv", mime="text/csv")
     else:
         st.info("Ejecuta la simulación para generar registros de tendencia.")
 
-# TAB 3: INSPECTOR DE SENSOR INDIVIDUAL
+# TAB 3: INSPECTOR
 with tab_inspector:
     st.subheader("Inspección de Nodo SYTEC")
     sensor_ids = [s.id for s in st.session_state.sensors]
@@ -269,7 +256,7 @@ with tab_inspector:
     c_i3.metric("K Actual", f"{s_target.k_actual:.4f}")
     c_i4.metric("Fase Radianes", f"{s_target.fase:.2f} rad")
 
-# TAB 4: TERMINAL DE LOGS
+# TAB 4: LOGS
 with tab_logs:
     st.subheader("Consola de Eventos en Vivo")
     if st.session_state.logs:
@@ -277,7 +264,7 @@ with tab_logs:
     else:
         st.text("No hay eventos registrados aún.")
 
-# LOOP DE SIMULACIÓN AUTOMÁTICA
+# LOOP AUTO-REFRESCO
 if run_auto:
     kernel.procesar_ciclo(sensibilidad, umbral_critico)
     time.sleep(intervalo)
