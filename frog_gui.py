@@ -11,8 +11,9 @@ import random
 import statistics
 import csv
 import os
-import tkinter as tk
-from tkinter import messagebox, filedialog
+import streamlit as at 
+# import tkinter as tk
+# from tkinter import messagebox, filedialog
 from dataclasses import dataclass
 from typing import List
 
