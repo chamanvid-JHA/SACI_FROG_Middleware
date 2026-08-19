@@ -97,11 +97,11 @@ st.subheader("Osciloscopio // Resonancia del Sistema")
 df_chart = st.session_state.historial.set_index('Ciclo')[['Actual', 'Prediccion_ML']]
 st.line_chart(df_chart)
 
-# Mapa de Calor de Entropía (Escalado a la matriz de 16 columnas)
-st.subheader("📊 Mapa de Calor de Entropía del Sistema (Matriz 16x16)")
+# Matriz de Entropía Segura (Visualizador de Datos sin errores de dependencias de estilos)
+st.subheader("📊 Matriz de Entropía del Sistema (Matriz 16x16)")
 matriz_calor = np.random.uniform(0, 1, (16, 16))
 df_calor = pd.DataFrame(matriz_calor)
-st.dataframe(df_calor.style.background_gradient(cmap='inferno'), use_container_width=True)
+st.dataframe(df_calor, use_container_width=True)
 
 # Eventos de Autocuración
 st.subheader("⚡ Eventos de Autocuración")
